@@ -2,7 +2,7 @@
 
 set client_name [lindex $argv 0];
 
-spawn ./openvpn-install.sh
+spawn /var/openvpn/openvpn-install/openvpn-install.sh
 
 expect "Option:" {send "1\r"}
 expect "Name:" {send "$client_name\r"}
