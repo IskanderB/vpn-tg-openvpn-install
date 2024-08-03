@@ -1,0 +1,11 @@
+#!/usr/bin/expect
+
+set client_name [lindex $argv 0];
+
+spawn ./openvpn-install.sh
+
+expect "Option:" {send "2\r"}
+expect "Client:" {send "$client_name\r"}
+expect -re "Confirm.*${client_name}.*revocation.*\\\[y/N\\\]:" {send "y\r"}
+
+expect eof
