@@ -1,0 +1,15 @@
+[Unit]
+Description=OpenVPN User Management API
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/var/openvpn/api
+Environment="API_KEY=changeme"
+ExecStart=/usr/bin/python3 /var/openvpn/api/api.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
