@@ -1,0 +1,13 @@
+#!/usr/bin/expect
+
+set timeout -1
+
+spawn /var/openvpn/openvpn-install/openvpn-install.sh
+
+expect -exact {Protocol [1]: } {send "2\r"}
+expect -exact {Port [1194]: } {send "1194\r"}
+expect -exact {DNS server [1]: } {send "2\r"}
+expect -exact {Name [client]: } {send "init_client\r"}
+expect -exact {Press any key to continue} {send "\r"}
+
+expect eof
