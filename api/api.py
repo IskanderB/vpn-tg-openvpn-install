@@ -6,7 +6,6 @@ app = Bottle()
 
 API_KEY      = os.environ.get("API_KEY", "changeme")
 SCRIPTS_DIR  = "/var/openvpn/openvpn-install"
-CERTS_DIR    = "/var/openvpn/certs"
 ROOT_DIR     = "/root"
 
 
@@ -38,7 +37,7 @@ def add_user():
     if not name.isalnum():
         abort(400, "Name must be alphanumeric")
 
-    cert_path = os.path.join(CERTS_DIR, f"{name}.ovpn")
+    cert_path = os.path.join(ROOT_DIR, f"{name}.ovpn")
     if os.path.exists(cert_path):
         abort(409, f"User '{name}' already exists")
 
@@ -46,8 +45,7 @@ def add_user():
     if result.returncode != 0:
         abort(500, f"Script error: {result.stderr}")
 
-    root_cert = os.path.join(ROOT_DIR, f"{name}.ovpn")
-    if not os.path.exists(root_cert):
+    if not os.path.exists(cert_path):
         abort(500, "Certificate was not generated")
 
     return static_file(
@@ -63,13 +61,13 @@ def add_user():
 def get_cert(name):
     check_auth()
 
-    cert_path = os.path.join(CERTS_DIR, f"{name}.ovpn")
+    cert_path = os.path.join(ROOT_DIR, f"{name}.ovpn")
     if not os.path.exists(cert_path):
         abort(404, f"Certificate for '{name}' not found")
 
     return static_file(
         f"{name}.ovpn",
-        root=CERTS_DIR,
+        root=ROOT_DIR,
         download=f"{name}.ovpn",
         mimetype="application/octet-stream",
     )
@@ -84,7 +82,7 @@ def delete_user(name):
     if result.returncode != 0:
         abort(500, f"Script error: {result.stderr}")
 
-    cert_path = os.path.join(CERTS_DIR, f"{name}.ovpn")
+    cert_path = os.path.join(ROOT_DIR, f"{name}.ovpn")
     if os.path.exists(cert_path):
         os.remove(cert_path)
 
