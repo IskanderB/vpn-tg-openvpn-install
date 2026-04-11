@@ -5,9 +5,9 @@ After=network.target
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/var/openvpn/api
+WorkingDirectory=/var/openvpn/openvpn-install/api
 Environment="API_KEY=changeme"
-ExecStart=/usr/bin/python3 /var/openvpn/api/api.py
+ExecStart=/usr/bin/python3 /var/openvpn/openvpn-install/api/api.py
 Restart=on-failure
 RestartSec=5
 
