@@ -7,7 +7,7 @@ Type=simple
 User=root
 WorkingDirectory=/var/openvpn/openvpn-install/api
 Environment="API_KEY=changeme"
-ExecStart=/usr/bin/python3 /var/openvpn/openvpn-install/api/api.py
+ExecStart=/usr/local/bin/gunicorn --workers 2 --bind 0.0.0.0:8000 --timeout 150 api:app
 Restart=on-failure
 RestartSec=5
 
